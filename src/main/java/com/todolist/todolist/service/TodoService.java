@@ -3,11 +3,14 @@ package com.todolist.todolist.service;
 import com.todolist.todolist.dto.TodoRequest;
 import com.todolist.todolist.dto.TodoResponse;
 import com.todolist.todolist.entity.Todo;
+import com.todolist.todolist.entity.User;
+import com.todolist.todolist.entity.specification.TodoSpecification;
 import com.todolist.todolist.repository.TodoRepository;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,9 +18,10 @@ import org.springframework.stereotype.Service;
 public class TodoService {
   private final TodoRepository repository;
 
-  public void postTodo(TodoRequest request){
-    if( request.getTitle() !=null ){
+  public void postTodo(long userId, TodoRequest request){
+    if( request.getTitle() != null ){
       Todo todo = Todo.from(request);
+      todo.setUser(User.from(userId));
       repository.save(todo);
     }else{
       throw new RuntimeException("투두 등록 실패");
@@ -31,9 +35,16 @@ public class TodoService {
     });
   }
 
-  public Page<TodoResponse> getMyTodoList(long userId, Pageable pageable) {
-    Page<Todo> pages = repository.findAllByUserId(pageable,userId);
-    return pages.map(p->TodoResponse.builder().id(p.getId()).title(p.getTitle()).createdAt(p.getCreatedAt()).success(p.isSuccess()).build());
+  public Page<TodoResponse> getMyTodoList(long userId,LocalDate dueDate, Pageable pageable) {
+    if( dueDate == null)
+      dueDate = LocalDate.now();
+
+    return repository.findAll(
+        Specification
+            .where(TodoSpecification.dueDateLessThanEqual(dueDate))
+            .and(TodoSpecification.hasUser(userId))
+        ,pageable
+    ).map(TodoResponse::from);
   }
 
   public void updateTodoDueDate(long todoId, LocalDate dueDate) {

@@ -42,7 +42,6 @@ public class Todo {
     Todo todo = new Todo();
 
     todo.title = request.getTitle();
-    todo.user = User.from(request.getUserId());
     todo.dueDate = request.getDueDate();
 
     return todo;

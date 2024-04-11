@@ -1,7 +1,9 @@
 package com.todolist.todolist.entity;
 
 import com.todolist.todolist.dto.UserSignupRequest;
+import com.todolist.todolist.entity.type.UserStatus;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,6 +29,8 @@ public class User {
   private String nickname;
   private String loginId;
   private String password;
+  @Convert(converter = UserStatus.Converter.class)
+  private UserStatus status = UserStatus.ACTIVE;
   @Column(updatable = false)
   private LocalDateTime createdAt = LocalDateTime.now();
 
@@ -42,5 +46,14 @@ public class User {
     User user = new User();
     user.id = userId;
     return user;
+  }
+
+  public void update(UserSignupRequest request) {
+    if (request.getNickname()!=null){
+      this.nickname = request.getNickname();
+    }
+    if (request.getPassword()!=null){
+      this.password = request.getPassword();
+    }
   }
 }

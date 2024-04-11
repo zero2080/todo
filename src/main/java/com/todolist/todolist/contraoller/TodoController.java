@@ -22,13 +22,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/todo")
 @RequiredArgsConstructor
 public class TodoController {
+
   private final TodoService service;
 
-  @PostMapping
+  @PostMapping("/user/{userId}")
   @ResponseStatus(HttpStatus.CREATED)
-  public void postTodo(@RequestBody TodoRequest request){
+  public void postTodo(@PathVariable Long userId, @RequestBody TodoRequest request){
     // 할일 등록
-    service.postTodo(request);
+    service.postTodo(userId,request);
   }
 
   @PutMapping("/{todoId}/{success}")
@@ -37,8 +38,13 @@ public class TodoController {
   }
 
   @GetMapping("/user/{userId}")
-  public Page<TodoResponse> getMyTodoList(@PathVariable long userId, Pageable pageable){
-    return service.getMyTodoList(userId,pageable);
+  public Page<TodoResponse> getMyTodoList(
+      @PathVariable
+      long userId,
+      @RequestParam(required = false)
+      LocalDate dueDate,
+      Pageable pageable){
+    return service.getMyTodoList(userId,dueDate,pageable);
   }
 
   @PutMapping("/{todoId}")

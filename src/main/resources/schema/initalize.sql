@@ -10,6 +10,7 @@ create table user (
     id int primary key auto_increment,
     nickname varchar(200) null,
     login_id varchar(200) not null unique,
+    status smallint(1) not null default 1,
     password varchar(60) not null,
     created_at datetime not null default current_timestamp
 );
@@ -24,3 +25,4 @@ CREATE TABLE todo (
 );
 
 ALTER TABLE `todo` ADD COLUMN due_date DATE NULL;
+ALTER TABLE `user` ADD COLUMN status smallint(1) not null default 1;
