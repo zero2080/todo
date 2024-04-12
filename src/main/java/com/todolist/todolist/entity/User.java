@@ -17,11 +17,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@EqualsAndHashCode(of="id")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(of="id")
 public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,8 +29,10 @@ public class User {
   private String nickname;
   private String loginId;
   private String password;
+
   @Convert(converter = UserStatus.Converter.class)
   private UserStatus status = UserStatus.ACTIVE;
+
   @Column(updatable = false)
   private LocalDateTime createdAt = LocalDateTime.now();
 

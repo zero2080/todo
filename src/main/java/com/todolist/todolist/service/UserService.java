@@ -3,6 +3,7 @@ package com.todolist.todolist.service;
 import com.todolist.todolist.dto.UserResponse;
 import com.todolist.todolist.dto.UserSignupRequest;
 import com.todolist.todolist.entity.User;
+import com.todolist.todolist.entity.type.UserStatus;
 import com.todolist.todolist.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,6 @@ public class UserService {
     }else{
       throw new RuntimeException("회원가입 불가");
     }
-
   }
 
   public void update(long userId, UserSignupRequest request) {
@@ -32,7 +32,12 @@ public class UserService {
   }
 
   public void withdraw(long userId) {
-    repository.deleteById(userId);
+
+    repository.findById(userId).ifPresent(user->{
+      user.setStatus(UserStatus.WITHDRAW);
+      repository.save(user);
+    });
+
   }
 
   public UserResponse getMyInfo(long userId) {

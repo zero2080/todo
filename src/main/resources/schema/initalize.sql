@@ -1,28 +1,26 @@
-create database todo_list;
+CREATE DATABASE todo_list;
 
-create user todo_list@'%' identified by 'todo_list';
+CREATE USER todo_list@'%' IDENTIFIED BY 'todo_list';
 
-grant all privileges on todo_list.* to todo_list@'%';
+GRANT ALL PRIVILEGES ON todo_list.* TO todo_list@'%';
 
-use todo_list;
+USE todo_list;
 
-create table user (
-    id int primary key auto_increment,
-    nickname varchar(200) null,
-    login_id varchar(200) not null unique,
-    status smallint(1) not null default 1,
-    password varchar(60) not null,
-    created_at datetime not null default current_timestamp
+CREATE TABLE user (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nickname VARCHAR(200) NULL,
+    login_id VARCHAR(200) NOT NULL UNIQUE,
+    status SMALLINT(1) NOT NULL DEFAULT 1,
+    password VARCHAR(60) NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE todo (
     id INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(200) NOT NULL,
-    user_id int not null,
-    success boolean not null default FALSE,
-    created_at datetime default current_timestamp not null,
-    constraint fk_todo_user_id foreign key (`user_id`) references user(`id`)
+    user_id INT NOT NULL,
+    due_date DATE NULL,
+    success BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    CONSTRAINT fk_todo_user_id FOREIGN KEY (`user_id`) REFERENCES user(`id`)
 );
-
-ALTER TABLE `todo` ADD COLUMN due_date DATE NULL;
-ALTER TABLE `user` ADD COLUMN status smallint(1) not null default 1;

@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -24,13 +25,18 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(of="id")
+/*
+
+ */
 public class Todo {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String title;
+
   @ManyToOne(fetch = FetchType.EAGER)
   private User user;
+
   private boolean success;
 
   private LocalDate dueDate;
@@ -40,7 +46,6 @@ public class Todo {
 
   public static Todo from(TodoRequest request) {
     Todo todo = new Todo();
-
     todo.title = request.getTitle();
     todo.dueDate = request.getDueDate();
 
