@@ -1,0 +1,24 @@
+### 회원가입
+POST http://localhost:8080/user
+Content-Type: application/json
+
+{
+    "loginId":"my_login_id",
+    "password":"1234asdf",
+    "nickname":"my_nick_name"
+}
+
+### 투두 등록
+POST http://localhost:8080/todo/user/1
+Content-Type: application/json
+
+{
+    "title":"할일이여",
+    "dueDate":"2024-04-30"
+}
+
+### 투두 조회
+GET http://localhost:8080/todo/user/1?dueDate=2025-01-30
+
+### 투두 완료
+PUT http://localhost:8080/todo/1/true
