@@ -1,7 +1,9 @@
 package com.todolist.todolist.entity.specification;
 
 import com.todolist.todolist.entity.Todo;
+
 import java.time.LocalDate;
+
 import org.springframework.data.jpa.domain.Specification;
 
 public class TodoSpecification {
@@ -16,5 +18,9 @@ public class TodoSpecification {
 
   public static Specification<Todo> hasUser(Long userId){
     return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("user").get("id"), userId);
+  }
+
+  public static Specification<Todo> isSuccess(Boolean success){
+    return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("success"),success);
   }
 }
