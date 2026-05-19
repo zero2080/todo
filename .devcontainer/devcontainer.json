@@ -11,7 +11,7 @@
 			"installMaven": "false",
 			"installGradle": "true"
 		},
-		"ghcr.io/devcontainers/features/docker-in-docker:2": {},
+		"ghcr.io/devcontainers/features/docker-in-docker:3": {},
 		"ghcr.io/devcontainers-contrib/features/gradle-sdkman:2": {},
 		"ghcr.io/devcontainers-contrib/features/springboot-sdkman:2": {}
 	}
